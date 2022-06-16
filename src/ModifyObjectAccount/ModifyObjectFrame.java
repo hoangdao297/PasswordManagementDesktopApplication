@@ -125,17 +125,18 @@ public class ModifyObjectFrame extends JFrame {
             String newpassget=newpassField.getText();
             String repassget=repassField.getText();
             String urlget=urlField.getText();
-            boolean bigcond= (newpassget==null || newpassget.equals(""))&& (repassget==null || repassget.equals("")) &&(urlget==null || urlget.equals(""));
-            if (bigcond) JOptionPane.showMessageDialog(null,"Missing fields to modify");
+            boolean bigcond= ((newpassget.equals(""))&& (repassget.equals(""))) ||(urlget.equals(""));
+            if (!bigcond) JOptionPane.showMessageDialog(null,"Missing fields to modify");
             else{
                 int rs=0;
-                if ((newpassget==null || newpassget.equals(""))&& (repassget==null || repassget.equals("")))
-                    rs=ModifyObject.modifyindb(user+userpass, appname, username, password,urlget, strDate);
+                if ((newpassget.equals(""))&& (repassget.equals(""))){
+                    rs=ModifyObject.modifyindb(user+userpass, appname, username, password,urlget, strDate);}
                 else{
                     if (!newpassget.equals(repassget)) JOptionPane.showMessageDialog(null,"Password and re-type password do not match");
-                    else rs=ModifyObject.modifyindb(user+userpass,appname,username,password,strDate);
+                    else {
+                        rs=ModifyObject.modifyindb(user+userpass,appname,username,newpassget,strDate);}
                 }
-                if (rs==0) JOptionPane.showMessageDialog(null,"Error");
+                if (rs==0 || rs==2) JOptionPane.showMessageDialog(null,"Error");
                 else JOptionPane.showMessageDialog(null,"Modified Successfully");
             }
         });
